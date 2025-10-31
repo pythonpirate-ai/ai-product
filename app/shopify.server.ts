@@ -1,6 +1,3 @@
-
-
-
 import "@shopify/shopify-app-react-router/adapters/node";
 import {
   ApiVersion,
@@ -8,21 +5,12 @@ import {
   shopifyApp,
 } from "@shopify/shopify-app-react-router/server";
 
-import Redis from "ioredis";
-import { RedisSessionStorage } from "@shopify/shopify-app-session-storage-redis";
+// 🚫 Redis komplett raus für den Test
+// import Redis from "ioredis";
+// import { RedisSessionStorage } from "@shopify/shopify-app-session-storage-redis";
 
-// ✅ Redis Cloud braucht TLS + SNI
-const redisUrl = process.env.REDIS_URL!;
-const host = new URL(redisUrl).hostname;
-
-const redis = new Redis(redisUrl, {
-  tls: { servername: host }, // 👈 wichtig: SNI aktivieren
-  family: 4,                 // IPv4 erzwingen (hilft gegen DNSv6 Fehler)
-  lazyConnect: true,
-  maxRetriesPerRequest: null,
-  enableAutoPipelining: true,
-});
-
+// ✅ TEMP: Memory Session Storage (keine externen Verbindungen nötig)
+import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY!,
@@ -36,7 +24,8 @@ const shopify = shopifyApp({
   appUrl: process.env.SHOPIFY_APP_URL!,
   authPathPrefix: "/auth",
 
-  sessionStorage: new RedisSessionStorage(redis),
+  // ⬇️ WICHTIG: hier nur Memory verwenden
+  sessionStorage: new MemorySessionStorage(),
 
   distribution: AppDistribution.AppStore,
   ...(process.env.SHOP_CUSTOM_DOMAIN
@@ -51,4 +40,4 @@ export const authenticate = shopify.authenticate;
 export const unauthenticated = shopify.unauthenticated;
 export const login = shopify.login;
 export const registerWebhooks = shopify.registerWebhooks;
-export const sessionStorage = shopify.sessionStorage;
+// Optional: export const sessionStorage = shopify.sessionStorage;
