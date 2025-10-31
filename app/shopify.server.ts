@@ -1,7 +1,4 @@
-// TEMP: zum Eingrenzen
-import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
 
-export const sessionStorage = new MemorySessionStorage();
 
 
 import "@shopify/shopify-app-react-router/adapters/node";
