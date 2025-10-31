@@ -1,21 +1,13 @@
 import type { ActionFunctionArgs } from "react-router";
 import { authenticate } from "../shopify.server";
-import db from "../db.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-    const { payload, session, topic, shop } = await authenticate.webhook(request);
-    console.log(`Received ${topic} webhook for ${shop}`);
+  const { topic, shop } = await authenticate.webhook(request);
 
-    const current = payload.current as string[];
-    if (session) {
-        await db.session.update({   
-            where: {
-                id: session.id
-            },
-            data: {
-                scope: current.toString(),
-            },
-        });
-    }
-    return new Response();
+  console.log(`✅ Received ${topic} webhook for ${shop}`);
+
+  // Falls du später etwas mit Redis speichern willst, kannst du hier auf shopify.sessionStorage zugreifen.
+  // z. B. await shopify.sessionStorage.storeSession(...)
+
+  return new Response("ok", { status: 200 });
 };
