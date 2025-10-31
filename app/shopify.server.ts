@@ -5,19 +5,19 @@ import {
   shopifyApp,
 } from "@shopify/shopify-app-react-router/server";
 
-// ⬇️ NEU: Redis statt Prisma
 import Redis from "ioredis";
 import { RedisSessionStorage } from "@shopify/shopify-app-session-storage-redis";
 
-// ⬇️ Redis-Verbindung (URL kommt aus Vercel: REDIS_URL = rediss://default:<PASS>@host:port)
-const redis = new Redis(process.env.REDIS_URL!);
+// ✅ Redis Cloud braucht TLS
+const redis = new Redis(process.env.REDIS_URL!, {
+  tls: {}, // << fix SSL error
+});
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY!,
   apiSecretKey: process.env.SHOPIFY_API_SECRET!,
   apiVersion: ApiVersion.October25,
 
-  // Nutze SHOPIFY_SCOPES (oder fallback auf SCOPES, falls du das bisher genutzt hast)
   scopes: (process.env.SHOPIFY_SCOPES ?? process.env.SCOPES ?? "")
     .split(",")
     .filter(Boolean),
@@ -25,7 +25,6 @@ const shopify = shopifyApp({
   appUrl: process.env.SHOPIFY_APP_URL!,
   authPathPrefix: "/auth",
 
-  // ⬇️ WICHTIG: Redis-Session-Storage
   sessionStorage: new RedisSessionStorage(redis),
 
   distribution: AppDistribution.AppStore,
