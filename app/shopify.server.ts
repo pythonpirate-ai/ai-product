@@ -4,17 +4,30 @@ import {
   AppDistribution,
   shopifyApp,
 } from "@shopify/shopify-app-react-router/server";
-import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
-import prisma from "./db.server";
+
+// ⬇️ NEU: Redis statt Prisma
+import Redis from "ioredis";
+import { RedisSessionStorage } from "@shopify/shopify-app-session-storage-redis";
+
+// ⬇️ Redis-Verbindung (URL kommt aus Vercel: REDIS_URL = rediss://default:<PASS>@host:port)
+const redis = new Redis(process.env.REDIS_URL!);
 
 const shopify = shopifyApp({
-  apiKey: process.env.SHOPIFY_API_KEY,
-  apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
+  apiKey: process.env.SHOPIFY_API_KEY!,
+  apiSecretKey: process.env.SHOPIFY_API_SECRET!,
   apiVersion: ApiVersion.October25,
-  scopes: process.env.SCOPES?.split(","),
-  appUrl: process.env.SHOPIFY_APP_URL || "",
+
+  // Nutze SHOPIFY_SCOPES (oder fallback auf SCOPES, falls du das bisher genutzt hast)
+  scopes: (process.env.SHOPIFY_SCOPES ?? process.env.SCOPES ?? "")
+    .split(",")
+    .filter(Boolean),
+
+  appUrl: process.env.SHOPIFY_APP_URL!,
   authPathPrefix: "/auth",
-  sessionStorage: new PrismaSessionStorage(prisma),
+
+  // ⬇️ WICHTIG: Redis-Session-Storage
+  sessionStorage: new RedisSessionStorage(redis),
+
   distribution: AppDistribution.AppStore,
   ...(process.env.SHOP_CUSTOM_DOMAIN
     ? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }
