@@ -8,17 +8,16 @@ import {
 import Redis from "ioredis";
 import { RedisSessionStorage } from "@shopify/shopify-app-session-storage-redis";
 
+// Wichtig: REDIS_URL = redis://default:<PASS>@redis-11894...:11894  (ohne "s")
 const redisUrl = process.env.REDIS_URL!;
-const host = new URL(redisUrl).hostname;
 
+// ⚙️ Redis ohne TLS (da dein Server kein TLS erwartet)
 const redis = new Redis(redisUrl, {
-  tls: { servername: host },  // SNI zwingend für Redis Cloud
-  family: 4,                  // IPv4 erzwingen
-  lazyConnect: true,
-  maxRetriesPerRequest: null,
+  family: 4,                // IPv4 erzwingen
+  lazyConnect: true,        // verbindet erst bei Bedarf
   enableAutoPipelining: true,
+  // kein tls:{}, kein servername
 });
-
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY!,
