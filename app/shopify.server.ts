@@ -8,10 +8,18 @@ import {
 import Redis from "ioredis";
 import { RedisSessionStorage } from "@shopify/shopify-app-session-storage-redis";
 
-// ✅ Redis Cloud braucht TLS
-const redis = new Redis(process.env.REDIS_URL!, {
-  tls: {}, // << fix SSL error
+// ✅ Redis Cloud braucht TLS + SNI
+const redisUrl = process.env.REDIS_URL!;
+const host = new URL(redisUrl).hostname;
+
+const redis = new Redis(redisUrl, {
+  tls: { servername: host }, // 👈 wichtig: SNI aktivieren
+  family: 4,                 // IPv4 erzwingen (hilft gegen DNSv6 Fehler)
+  lazyConnect: true,
+  maxRetriesPerRequest: null,
+  enableAutoPipelining: true,
 });
+
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY!,
