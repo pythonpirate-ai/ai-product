@@ -27,9 +27,13 @@
   "@react-router/serve": "^7.9.3",
   "@shopify/app-bridge-react": "^4.2.4",
   "@shopify/cli": "3.86.1",
-  "@shopify/shopify-app-react-router": "^1.0.0",
-  "@shopify/shopify-app-session-storage-redis": "^1.1.0",
+
+  "@shopify/shopify-api": "^12.1.1",
+  "@shopify/shopify-app-react-router": "^1.0.2",
+  "@shopify/shopify-app-session-storage": "^4.0.1",
+  "@shopify/shopify-app-session-storage-redis": "^5.0.2",
   "@shopify/shopify-app-session-storage-memory": "^5.0.2",
+
   "ioredis": "^5.3.2",
   "isbot": "^5.1.31",
   "react": "^18.3.1",
