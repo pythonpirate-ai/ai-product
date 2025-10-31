@@ -8,17 +8,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const host = new URL(url).hostname;
   const events: string[] = [];
 
-  const r = new Redis(url, {
-    tls: { servername: host, minVersion: "TLSv1.2" }, // SNI + TLS >=1.2
-    family: 4,                       // IPv4
-    connectTimeout: 10000,
-    maxRetriesPerRequest: 1,
-    retryStrategy: () => null,
-    lazyConnect: true,
-    enableOfflineQueue: false,       // sofort Fehler statt queuen
-    enableAutoPipelining: false,
-    showFriendlyErrorStack: true,
-  });
+  const r = new Redis(process.env.REDIS_URL!, {
+  family: 4,
+  connectTimeout: 10_000,
+  maxRetriesPerRequest: 1,
+  retryStrategy: () => null,
+  lazyConnect: true,
+});
+
 
   r.on("connect",      () => events.push("event:connect"));
   r.on("ready",        () => events.push("event:ready"));
