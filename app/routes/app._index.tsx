@@ -35,7 +35,7 @@ export default function Index() {
           cursor: loading ? "default" : "pointer",
         }}
       >
-        {loading ? "Startet…" : "Make-Prozess starten"}
+        {loading ? "Startet…" : "Prozess starten"}
       </button>
       {msg && (
         <div
