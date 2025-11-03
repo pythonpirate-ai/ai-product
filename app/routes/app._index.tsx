@@ -10,7 +10,7 @@ export default function Index() {
       setMsg(null);
       const res = await fetch("/api/trigger-import", { method: "POST" });
       const data = await res.json().catch(() => ({}));
-      if (res.ok && data?.ok) setMsg("✅ Make-Prozess gestartet");
+      if (res.ok && data?.ok) setMsg("✅ Prozess gestartet");
       else setMsg(`❌ Fehler (${data?.status ?? res.status})`);
     } catch {
       setMsg("❌ Netzwerkfehler");
@@ -21,8 +21,8 @@ export default function Index() {
 
   return (
     <div style={{ padding: 20, fontFamily: "sans-serif" }}>
-      <h1 style={{ fontSize: 22, fontWeight: 700 }}>Bild-Import</h1>
-      <p>Starte das Make-Szenario (Dropbox → Shopify) per Klick.</p>
+      <h1 style={{ fontSize: 22, fontWeight: 700 }}>Kleidung per AI importieren </h1>
+      <p>Starte den Prozess (Dropbox → Shopify) per Klick.</p>
       <button
         onClick={startMake}
         disabled={loading}
