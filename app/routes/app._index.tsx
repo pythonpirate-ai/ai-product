@@ -20,7 +20,7 @@ export default function Index() {
   }
 
   return (
-    <div style={{ padding: 20, fontFamily: "sans-serif" }}>
+    <div style={{ padding: 20, fontFamily: "sans-serif", lineHeight: 1.6 }}>
       <h1 style={{ fontSize: 22, fontWeight: 700 }}>Kleidung per AI importieren</h1>
       <p>Starte den Prozess (Dropbox → Shopify) per Klick.</p>
 
@@ -51,17 +51,35 @@ export default function Index() {
         </div>
       )}
 
-      <p>
-        1. <strong>Fotografiere mit der Dropbox App</strong> direkt und stelle alle
-        Bilder in den Ordner "Uploads". <strong>Wichtig:</strong> Bitte denke daran,
-        immer ein <strong>Grössen-Schild</strong> mit auf dem Bild zu fotografieren.
-        2. Wenn du fertig bist, klicke auf den grünen Button "Prozess starten". 
-
-        Anschliessend nimmt das Programm Bild für Bild aus der Dropbox, lässt es über ChatGPT identifizeiren, vergibt Tags und lädt es als neues Produkt in Shopify. Pro Bild dauert dies ca. 30sek.
-        
-        <strong>Wichtig:</strong> Manchmal funktioniert der Bild-Upload noch nicht richtig :( - dann erscheint zwar das Kleidungsstück als <strong>Produkt aber ohne Bild</strong>strong>. (Ich arbeite daran). Dann muss dieses manuell nachgelden werden.
-        Die Bilder sind nach dem Upload alle im Ordner "Archive" auf der Dropbox zu finden.
-      </p>
+      <div style={{ marginTop: 24 }}>
+        <p>
+          1. <strong>Fotografiere mit der Dropbox App</strong> direkt und stelle alle
+          Bilder in den Ordner <strong>"Uploads"</strong>.
+        </p>
+        <p>
+          <strong>Wichtig:</strong> Bitte denke daran, immer ein{" "}
+          <strong>Grössen-Schild</strong> mit auf dem Bild zu fotografieren.
+        </p>
+        <p>
+          2. Wenn du fertig bist, klicke auf den grünen Button{" "}
+          <strong>"Prozess starten"</strong>.
+        </p>
+        <p>
+          Anschliessend nimmt das Programm Bild für Bild aus der Dropbox, lässt es
+          über ChatGPT identifizieren, vergibt Tags und lädt es als neues Produkt in
+          Shopify. Pro Bild dauert dies ca. <strong>30 Sekunden</strong>.
+        </p>
+        <p>
+          <strong>Wichtig:</strong> Manchmal funktioniert der Bild-Upload noch nicht
+          richtig 😅 – dann erscheint zwar das Kleidungsstück als{" "}
+          <strong>Produkt, aber ohne Bild</strong> (ich arbeite daran). Dann muss das
+          Bild manuell nachgeladen werden.
+        </p>
+        <p>
+          Nach dem Upload findest du alle Bilder im Ordner{" "}
+          <strong>"Archive"</strong> auf der Dropbox.
+        </p>
+      </div>
     </div>
   );
 }
